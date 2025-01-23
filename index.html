@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Quejas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <form id="complaintForm">
+        <h2>Formulario de Quejas</h2>
+
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required placeholder="Escribe tu nombre">
+
+        <label for="phone">Teléfono:</label>
+        <input type="tel" id="phone" name="phone" required placeholder="Escribe tu teléfono">
+
+        <label for="complaint">Descripción de la queja:</label>
+        <textarea id="complaint" name="complaint" rows="4" required placeholder="Describe tu queja"></textarea>
+
+        <!-- Botón para abrir la cámara -->
+        <button type="button" id="openCamera">Abrir Cámara</button>
+        
+        <!-- Vista previa del video de la cámara -->
+        <video id="video" autoplay style="display: none;"></video>
+        <canvas id="canvas" style="display: none;"></canvas>
+        
+        <!-- Mensaje para cuando se tome una foto -->
+        <input type="hidden" id="photoData" name="photoData">
+
+        <button type="submit">Enviar Queja</button>
+    </form>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const photoData = document.getElementById('photoData');
+        const openCameraButton = document.getElementById('openCamera');
+        let cameraStream = null;
+
+        // Abrir la cámara cuando se presiona el botón
+        openCameraButton.addEventListener('click', async () => {
+            try {
+                // Activar el video solo cuando se presiona el botón
+                video.style.display = 'block';
+                openCameraButton.textContent = 'Tomar Foto';
+                
+                // Acceder a la cámara
+                cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = cameraStream;
+                
+                // Cambiar función del botón a capturar la foto
+                openCameraButton.onclick = capturePhoto;
+            } catch (error) {
+                alert('No se pudo acceder a la cámara: ' + error.message);
+            }
+        });
+
+        // Capturar foto desde el video
+        function capturePhoto() {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            // Dibujar el cuadro del video en el canvas
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convertir a base64
+            const imageData = canvas.toDataURL('image/png');
+            photoData.value = imageData; // Guardar la imagen en el input oculto
+            alert('Foto tomada correctamente.');
+
+            // Detener la cámara y ocultar el video
+            stopCamera();
+        }
+
+        // Detener la cámara
+        function stopCamera() {
+            if (cameraStream) {
+                const tracks = cameraStream.getTracks();
+                tracks.forEach(track => track.stop());
+            }
+            video.style.display = 'none';
+            openCameraButton.textContent = 'Abrir Cámara';
+        }
+
+        // Manejar el envío del formulario
+        document.getElementById('complaintForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const complaint = document.getElementById('complaint').value;
+            const photo = photoData.value;
+
+            // Mostrar un mensaje de confirmación
+            console.log({
+                name,
+                phone,
+                complaint,
+                photo
+            });
+            alert('Queja enviada con éxito.');
+        });
+    </script>
+</body>
+</html>
