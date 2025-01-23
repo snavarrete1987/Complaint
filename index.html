@@ -32,6 +32,8 @@
         <button type="submit">Enviar Queja</button>
     </form>
 
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+
     <script>
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
@@ -103,6 +105,32 @@
             });
             alert('Queja enviada con éxito.');
         });
+
+        // Inicializa EmailJS con tu User ID (lo obtienes del panel de EmailJS)
+        emailjs.init(DcZhRxhiOBKt7XoK9);
+
+        document.getElementById("complaintForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevenir el envío predeterminado del formulario
+
+        // Recolectar datos del formulario
+        const formData = {
+            name: document.getElementById("name").value,
+            phone: document.getElementById("phone").value,
+            complaint: document.getElementById("complaint").value,
+        };
+
+        // Enviar datos a través de EmailJS
+        emailjs.send(service_aphcnc5, template_qivhtae, formData)
+            .then(function(response) {
+                alert("¡Correo enviado con éxito! Gracias por tu queja.");
+            })
+            .catch(function(error) {
+                console.error("Error al enviar el correo:", error);
+                alert("Hubo un error al enviar tu queja. Intenta nuevamente.");
+            });
+        });
+
+
     </script>
 </body>
 </html>
