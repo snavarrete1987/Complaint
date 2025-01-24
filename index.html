@@ -3,24 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Quejas</title>
+    <title>New Image Solutions</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <form id="complaintForm">
-        <h2>Formulario de Quejas</h2>
+        <h2>Complaint Form</h2>
 
-        <label for="name">Nombre:</label>
-        <input type="text" id="name" name="name" required placeholder="Escribe tu nombre">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required placeholder="Write your name.">
 
-        <label for="phone">Teléfono:</label>
-        <input type="tel" id="phone" name="phone" required placeholder="Escribe tu teléfono">
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" required placeholder="Write your address.">
 
-        <label for="complaint">Descripción de la queja:</label>
-        <textarea id="complaint" name="complaint" rows="4" required placeholder="Describe tu queja"></textarea>
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" required placeholder="Write your phone number.">
 
-        <!-- Botón para abrir la cámara -->
-        <button type="button" id="openCamera">Abrir Cámara</button>
+        <label for="unit">Unit:</label>
+        <input type="text" id="unit" name="unit" required placeholder="Write your unit number.">
+
+        <label for="complaint">Complaint Description:</label>
+        <textarea id="complaint" name="complaint" rows="4" required placeholder="Write your complaint."></textarea>
+
+        <!-- Botón para abrir la cámara 
+        <button class="OpenCam" type="button" id="openCamera">Open Camera</button>-->
+        <h3>Take a picture: </h3>
+        <!-- Botón con ícono de cámara -->
+        <button class="OpenCam" type="button" id="openCamera">
+            <i class="fas fa-camera"></i>
+        </button>
         
         <!-- Vista previa del video de la cámara -->
         <video id="video" autoplay style="display: none;"></video>
@@ -29,7 +41,7 @@
         <!-- Mensaje para cuando se tome una foto -->
         <input type="hidden" id="photoData" name="photoData">
 
-        <button type="submit">Enviar Queja</button>
+        <button type="submit">Submit</button>
     </form>
 
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
@@ -43,21 +55,22 @@
 
         // Abrir la cámara cuando se presiona el botón
         openCameraButton.addEventListener('click', async () => {
-            try {
-                // Activar el video solo cuando se presiona el botón
-                video.style.display = 'block';
-                openCameraButton.textContent = 'Tomar Foto';
-                
-                // Acceder a la cámara
-                cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
-                video.srcObject = cameraStream;
-                
-                // Cambiar función del botón a capturar la foto
-                openCameraButton.onclick = capturePhoto;
-            } catch (error) {
-                alert('No se pudo acceder a la cámara: ' + error.message);
-            }
-        });
+    try {
+        // Activar el video
+        video.style.display = 'block';
+        openCameraButton.classList.add('taking-photo'); // Agregar clase indicando que está en modo foto
+
+        // Acceder a la cámara
+        cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = cameraStream;
+
+        // Cambiar la funcionalidad del botón a capturar foto
+        openCameraButton.onclick = capturePhoto;
+    } catch (error) {
+        alert('No se pudo acceder a la cámara: ' + error.message);
+    }
+});
+
 
         // Capturar foto desde el video
         function capturePhoto() {

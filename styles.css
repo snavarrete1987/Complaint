@@ -7,7 +7,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 /* Estilos del formulario */
@@ -27,7 +28,7 @@ label {
 }
 
 input, textarea {
-    width: 100%;
+    width: 90%;
     margin-bottom: 15px;
     padding: 10px;
     border: 1px solid #ccc;
@@ -45,11 +46,45 @@ button {
     color: #fff;
     border: none;
     padding: 10px;
+    margin-bottom: 1%;
     border-radius: 5px;
     cursor: pointer;
-    width: 100%;
+    width: 50%;
+    display: flex;            /* Flexbox para centrar elementos */
+    justify-content: center;  /* Centrado horizontal */
+    align-items: center;      /* Centrado vertical (opcional) */
+    margin: 0 auto;           /* Centrar con márgenes automáticos */
 }
 
 button:hover {
     background-color: #0056b3;
+}
+
+.OpenCam_ {
+    display: flex;            /* Flexbox para centrar elementos */
+    justify-content: center;  /* Centrado horizontal */
+    align-items: center;      /* Centrado vertical (opcional) */
+    margin: 0 auto;           /* Centrar con márgenes automáticos */
+}
+
+.OpenCam {
+    background-color: #007BFF; /* Color de fondo */
+    color: #fff;              /* Color del ícono */
+    border: 2px solid #fff;   /* Borde blanco */
+    padding: 10px;            /* Espaciado interno */
+    border-radius: 50%;       /* Bordes redondeados (botón circular) */
+    cursor: pointer;          /* Cambia el cursor al pasar el mouse */
+    width: 50px;              /* Ancho del botón */
+    height: 50px;             /* Alto del botón */
+    display: flex;           /* Para centrar el ícono */
+    align-items: center;     /* Centrado vertical */
+    justify-content: center;  /* Centrado horizontal */
+    margin: 0 auto;
+    margin-bottom: 10%;
+    font-size: 18px;          /* Tamaño del ícono */
+    
+}
+
+.OpenCam:hover {
+    background-color: #0056b3; /* Color de fondo al pasar el mouse */
 }
