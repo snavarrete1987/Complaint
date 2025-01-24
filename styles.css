@@ -5,16 +5,19 @@ body {
     padding: 0;
     background-color: #f4f4f9;
     display: flex;
-    justify-content: center;
+    /*justify-content: center;*/
     align-items: center;
+    flex-direction: column;
     min-height: 100vh;
     overflow-x: hidden;
 }
 
 /* Estilos del formulario */
 form {
+    flex: 1;
     background: #fff;
     padding: 20px;
+    padding-bottom: 0px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
@@ -28,7 +31,7 @@ label {
 }
 
 input, textarea {
-    width: 90%;
+    width: 95%;
     margin-bottom: 15px;
     padding: 10px;
     border: 1px solid #ccc;
@@ -87,4 +90,11 @@ button:hover {
 
 .OpenCam:hover {
     background-color: #0056b3; /* Color de fondo al pasar el mouse */
+}
+
+footer{
+    text-align: center;
+    font-size: 14px;
+    width: 100%;
+    margin-top: 10%;
 }

@@ -42,6 +42,14 @@
         <input type="hidden" id="photoData" name="photoData">
 
         <button type="submit">Submit</button>
+
+       
+        <footer>
+            <h6>
+                &copy; 2025 <a href="https://newimagesolutions.ca" target="_blank" style="text-decoration: none; color: #007BFF;">New Image Solutions</a>. All rights reserved.
+            </h6>
+        </footer>
+</body>
     </form>
 
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
@@ -84,7 +92,7 @@
             // Convertir a base64
             const imageData = canvas.toDataURL('image/png');
             photoData.value = imageData; // Guardar la imagen en el input oculto
-            alert('Foto tomada correctamente.');
+            alert('Photo taken successfully.');
 
             // Detener la cámara y ocultar el video
             stopCamera();
@@ -97,7 +105,7 @@
                 tracks.forEach(track => track.stop());
             }
             video.style.display = 'none';
-            openCameraButton.textContent = 'Abrir Cámara';
+            //openCameraButton.textContent = 'Abrir Cámara';
         }
 
         // Manejar el envío del formulario
@@ -116,7 +124,7 @@
                 complaint,
                 photo
             });
-            alert('Queja enviada con éxito.');
+            alert('Complaint sent successfully, New image solution team will get in touch ass soon as possible!!!');
         });
 
         // Inicializa EmailJS con tu User ID (lo obtienes del panel de EmailJS)
@@ -145,5 +153,5 @@
 
 
     </script>
-</body>
+           
 </html>
