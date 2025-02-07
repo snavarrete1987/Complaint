@@ -4,12 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Image Solutions</title>
+    <link rel="icon" href="./images/favicon.ico" type="image/png">
+    <link rel="apple-touch-icon" href="./images/apple-touch-icon.png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
 </head>
 <body>
     <form id="complaintForm">
-        <h2>Complaint Form</h2>
+        <div class="header">
+            <div class="logo">
+                <img src="./images/Logo.png" alt="Logo newimagesolutions" width="60">
+            </div>
+            <h2 class="title">Complaint Form</h2>
+        </div>
 
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required placeholder="Write your name.">
@@ -26,132 +34,60 @@
         <label for="complaint">Complaint Description:</label>
         <textarea id="complaint" name="complaint" rows="4" required placeholder="Write your complaint."></textarea>
 
-        <!-- Botón para abrir la cámara 
-        <button class="OpenCam" type="button" id="openCamera">Open Camera</button>-->
-        <h3>Take a picture: </h3>
-        <!-- Botón con ícono de cámara -->
-        <button class="OpenCam" type="button" id="openCamera">
-            <i class="fas fa-camera"></i>
-        </button>
-        
-        <!-- Vista previa del video de la cámara -->
-        <video id="video" autoplay style="display: none;"></video>
-        <canvas id="canvas" style="display: none;"></canvas>
-        
-        <!-- Mensaje para cuando se tome una foto -->
-        <input type="hidden" id="photoData" name="photoData">
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image" accept="image/*">
 
         <button type="submit">Submit</button>
 
        
         <footer>
             <h6>
-                &copy; 2025 <a href="https://newimagesolutions.ca" target="_blank" style="text-decoration: none; color: #007BFF;">New Image Solutions</a>. All rights reserved.
+                &copy; 2025 New Image Solutions. All rights reserved. <a href="https://newimagesolutions.ca" target="_blank" style="text-decoration: none; color: #007BFF;">Web New Image Solutions</a>
             </h6>
         </footer>
 </body>
-    </form>
-
-    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-
+    </form>      
+    
     <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const photoData = document.getElementById('photoData');
-        const openCameraButton = document.getElementById('openCamera');
-        let cameraStream = null;
-
-        // Abrir la cámara cuando se presiona el botón
-        openCameraButton.addEventListener('click', async () => {
-    try {
-        // Activar el video
-        video.style.display = 'block';
-        openCameraButton.classList.add('taking-photo'); // Agregar clase indicando que está en modo foto
-
-        // Acceder a la cámara
-        cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
-        video.srcObject = cameraStream;
-
-        // Cambiar la funcionalidad del botón a capturar foto
-        openCameraButton.onclick = capturePhoto;
-    } catch (error) {
-        alert('No se pudo acceder a la cámara: ' + error.message);
-    }
-});
-
-
-        // Capturar foto desde el video
-        function capturePhoto() {
-            const context = canvas.getContext('2d');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-
-            // Dibujar el cuadro del video en el canvas
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // Convertir a base64
-            const imageData = canvas.toDataURL('image/png');
-            photoData.value = imageData; // Guardar la imagen en el input oculto
-            alert('Photo taken successfully.');
-
-            // Detener la cámara y ocultar el video
-            stopCamera();
-        }
-
-        // Detener la cámara
-        function stopCamera() {
-            if (cameraStream) {
-                const tracks = cameraStream.getTracks();
-                tracks.forEach(track => track.stop());
-            }
-            video.style.display = 'none';
-            //openCameraButton.textContent = 'Abrir Cámara';
-        }
-
-        // Manejar el envío del formulario
-        document.getElementById('complaintForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const complaint = document.getElementById('complaint').value;
-            const photo = photoData.value;
-
-            // Mostrar un mensaje de confirmación
-            console.log({
-                name,
-                phone,
-                complaint,
-                photo
-            });
-            alert('Complaint sent successfully, New image solution team will get in touch ass soon as possible!!!');
-        });
-
-        // Inicializa EmailJS con tu User ID (lo obtienes del panel de EmailJS)
-        emailjs.init(DcZhRxhiOBKt7XoK9);
-
         document.getElementById("complaintForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevenir el envío predeterminado del formulario
+            event.preventDefault(); // Prevenir el envío del formulario
 
-        // Recolectar datos del formulario
-        const formData = {
-            name: document.getElementById("name").value,
-            phone: document.getElementById("phone").value,
-            complaint: document.getElementById("complaint").value,
-        };
+            let name = document.getElementById("name").value.trim();
+            let phone = document.getElementById("phone").value.trim();
+            let address = document.getElementById("address").value.trim();
+            let unit = document.getElementById("unit").value.trim();
+            let complaint = document.getElementById("complaint").value.trim();
 
-        // Enviar datos a través de EmailJS
-        emailjs.send(service_aphcnc5, template_qivhtae, formData)
-            .then(function(response) {
-                alert("¡Correo enviado con éxito! Gracias por tu queja.");
-            })
-            .catch(function(error) {
-                console.error("Error al enviar el correo:", error);
-                alert("Hubo un error al enviar tu queja. Intenta nuevamente.");
-            });
+            // Expresión regular para validar que el teléfono tenga exactamente 10 dígitos numéricos
+            let phonePattern = /^\d{10}$/;
+
+            if (name === "") {
+                alert("Please enter your name.");
+                return;
+            }
+
+            if (!phonePattern.test(phone)) {
+                alert("Phone number must be exactly 10 digits and contain only numbers.");
+                return;
+            }
+
+            if (address === "") {
+                alert("Please enter your address.");
+                return;
+            }
+
+            if (unit === "") {
+                alert("Please enter your unit number.");
+                return;
+            }
+
+            if (complaint === "") {
+                alert("Please describe your complaint.");
+                return;
+            }
+
+            alert("Form submitted successfully!");
+            this.submit(); // Enviar el formulario si todo está correcto
         });
-
-
     </script>
-           
 </html>
